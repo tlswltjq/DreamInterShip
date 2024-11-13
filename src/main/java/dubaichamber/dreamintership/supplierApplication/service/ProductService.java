@@ -5,6 +5,8 @@ import dubaichamber.dreamintership.supplierApplication.repository.ProductReposit
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -15,5 +17,16 @@ public class ProductService {
                 .productName(productName)
                 .description(description)
                 .build());
+    }
+
+    public Product retireveProduct(String productName) {
+        Product product = productRepository.findById(productName).orElseThrow(NoSuchElementException::new);
+        return product;
+    }
+
+    public Product deleteProduct(String productName) {
+        Product product = productRepository.findById(productName).orElseThrow(NoSuchElementException::new);
+        productRepository.delete(product);
+        return product;
     }
 }
