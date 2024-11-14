@@ -9,17 +9,15 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@IdClass(ProductApplicationId.class)
 @Table(name = "product_application")
 public class ProductApplication {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_application_id")
-    private Long ProductApplicationId;
-
     @ManyToOne
     @JoinColumn(name = "application_id", referencedColumnName = "application_id")
     private Application applicationId;
 
+    @Id
     @ManyToOne
     @JoinColumn(name = "product_name", referencedColumnName = "product_name")
     private Product productName;
