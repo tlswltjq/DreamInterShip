@@ -1,5 +1,7 @@
 package dubaichamber.dreamintership.util;
 
+import dubaichamber.dreamintership.supplierApplication.entity.Company;
+import dubaichamber.dreamintership.supplierApplication.entity.CompanyId;
 import dubaichamber.dreamintership.supplierApplication.entity.Product;
 
 public class FixtureFactory {
@@ -9,5 +11,15 @@ public class FixtureFactory {
                 .description(description)
                 .build();
         return entity;
+    }
+
+    public CompanyId createCompanyId(String companyName, String contactPerson) {
+        return new CompanyId(companyName, contactPerson);
+    }
+
+    public Company createCompany(CompanyId companyId) {
+        return Company.builder()
+                .id(companyId)
+                .build();
     }
 }

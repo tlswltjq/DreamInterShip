@@ -4,6 +4,8 @@ import dubaichamber.dreamintership.supplierApplication.entity.Company;
 import dubaichamber.dreamintership.supplierApplication.entity.CompanyId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CompanyRepository extends JpaRepository<Company, CompanyId> {
+import java.util.List;
 
+public interface CompanyRepository extends JpaRepository<Company, CompanyId> {
+    List<Company> findById_CompanyName(String companyName);
 }
