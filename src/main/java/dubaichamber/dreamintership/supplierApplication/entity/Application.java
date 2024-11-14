@@ -46,6 +46,6 @@ public class Application {
     @Column(name = "comment")
     private String comment;
 
-    @Column(name = "created_ad")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 }
