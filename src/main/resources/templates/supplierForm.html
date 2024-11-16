@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Supplier Form</title>
+</head>
+<body>
+<h1>Supplier Application Form</h1>
+<form th:action="@{/supplier/form}" th:object="${supplierForm}" method="post" enctype="multipart/form-data">
+  <label>Company Name: <input type="text" th:field="*{companyName}" /></label><br/>
+  <label>Contact Person: <input type="text" th:field="*{contactPerson}" /></label><br/>
+  <label>Email: <input type="email" th:field="*{email}" /></label><br/>
+  <label>Address: <input type="text" th:field="*{address}" /></label><br/>
+  <label>Phone Number: <input type="text" th:field="*{phoneNumber}" /></label><br/>
+  <label>Website: <input type="text" th:field="*{website}" /></label><br/>
+  <label>List of Products: <input type="text" th:field="*{products}" /></label><br/>
+  <label>Product Catalogue: <input type="file" th:field="*{productCatalogue}" /></label><br/>
+  <label>Comment: <textarea th:field="*{comment}"></textarea></label><br/>
+  <button type="submit">Submit</button>
+</form>
+</body>
+</html>
