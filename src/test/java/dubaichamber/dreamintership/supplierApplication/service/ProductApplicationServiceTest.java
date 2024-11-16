@@ -1,9 +1,11 @@
 package dubaichamber.dreamintership.supplierApplication.service;
 
-import dubaichamber.dreamintership.supplierApplication.entity.*;
+import dubaichamber.dreamintership.supplierApplication.entity.Application;
+import dubaichamber.dreamintership.supplierApplication.entity.Product;
+import dubaichamber.dreamintership.supplierApplication.entity.ProductApplication;
+import dubaichamber.dreamintership.supplierApplication.entity.ProductApplicationId;
 import dubaichamber.dreamintership.supplierApplication.repository.ProductApplicationRepository;
 import dubaichamber.dreamintership.util.FixtureFactory;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
