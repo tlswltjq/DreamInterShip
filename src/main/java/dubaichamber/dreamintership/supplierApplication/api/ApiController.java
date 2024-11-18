@@ -33,7 +33,7 @@ public class ApiController {
         String filePath = "";
         MultipartFile productCatalogue = request.getProductCatalogue();
         if (productCatalogue != null && !productCatalogue.isEmpty()) {
-            filePath = fileService.storeFile(productCatalogue);
+            filePath = fileService.storeFile(productCatalogue, request.getCompanyName(), request.getContactPerson());
         }
         Application application = applicationService.createApplication(company, request.getEmail(), request.getAddress(), request.getPhoneNumber(), request.getWebsite(), filePath, request.getComment());
 

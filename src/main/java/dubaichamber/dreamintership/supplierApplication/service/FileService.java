@@ -21,9 +21,10 @@ public class FileService {
         }
     }
 
-    public String storeFile(MultipartFile file) {
+    public String storeFile(MultipartFile file, String companyName, String contactPerson) {
         try {
-            Path targetLocation = this.fileStorageLocation.resolve(file.getOriginalFilename());
+            String newFileName = companyName + "_" + contactPerson + "_" + file.getOriginalFilename();
+            Path targetLocation = this.fileStorageLocation.resolve(newFileName);
             Files.copy(file.getInputStream(), targetLocation);
             return targetLocation.toString();
         } catch (IOException ex) {
