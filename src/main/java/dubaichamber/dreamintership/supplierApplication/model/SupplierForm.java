@@ -13,7 +13,7 @@ public class SupplierForm {
     private String address;
     private String phoneNumber;
     private String website;
-    private List<String> products;
+    private List<ProductAndDescription> products;
     private MultipartFile productCatalogue;
     private String comment;
 }
