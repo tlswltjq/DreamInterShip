@@ -8,6 +8,5 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
-    List<Application> findByCompany_Id_CompanyName(String companyName);
     List<Application> findByCompany(Company company);
 }

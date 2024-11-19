@@ -15,9 +15,10 @@ import java.util.NoSuchElementException;
 public class ApplicationService {
     private final ApplicationRepository applicationRepository;
 
-    public Application createApplication(Company company, String email, String address, String phoneNumber, String webSite, String fileUrl, String comment) {
+    public Application createApplication(Company company, String contactPerson, String email, String address, String phoneNumber, String webSite, String fileUrl, String comment) {
         return applicationRepository.save(Application.builder()
                 .company(company)
+                .contactPerson(contactPerson)
                 .email(email)
                 .address(address)
                 .phoneNumber(phoneNumber)
@@ -38,10 +39,4 @@ public class ApplicationService {
         List<Application> applicationList = applicationRepository.findByCompany(company);
         return applicationList;
     }
-
-    public List<Application> retrieveApplicationList(String companyName) {
-        List<Application> applicationList = applicationRepository.findByCompany_Id_CompanyName(companyName);
-        return applicationList;
-    }
-
 }
