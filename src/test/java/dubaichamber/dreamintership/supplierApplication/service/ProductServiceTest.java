@@ -27,7 +27,7 @@ class ProductServiceTest {
     @InjectMocks
     private ProductService productService;
 
-    @DisplayName("Can create product entity")
+    @DisplayName("Should create a product entity successfully")
     @Test
     void createProductTest() {
         String productName = "apple";
@@ -42,7 +42,7 @@ class ProductServiceTest {
         assertThat(product).isSameAs(newProduct);
     }
 
-    @DisplayName("Can find product entity with name ")
+    @DisplayName("Should retrieve a product entity by name successfully")
     @Test
     void retrieveProductTest() {
         String productName = "apple";
@@ -57,7 +57,7 @@ class ProductServiceTest {
         assertThat(retireveProduct).isSameAs(product);
     }
 
-    @DisplayName("Can't find product entity with non-existing name")
+    @DisplayName("Should throw NoSuchElementException when retrieving a non-existing product")
     @Test
     void failToRetrieveProductTest() {
         String productName = "nonExistingProduct";
@@ -69,7 +69,7 @@ class ProductServiceTest {
         verify(productRepository).findById(productName);
     }
 
-    @DisplayName("Can delete product entity with name")
+    @DisplayName("Should delete a product entity by name successfully")
     @Test
     void deleteProductTest() {
         String productName = "apple";
@@ -85,7 +85,7 @@ class ProductServiceTest {
         assertThat(deletedProduct).isSameAs(product);
     }
 
-    @DisplayName("Can't delete product entity with non-existing name")
+    @DisplayName("Should throw NoSuchElementException when deleting a non-existing product")
     @Test
     void failToDeleteProductTest() {
         String productName = "nonExistingProduct";

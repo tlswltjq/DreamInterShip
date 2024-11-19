@@ -29,7 +29,7 @@ class ProductApplicationServiceTest {
     @InjectMocks
     private ProductApplicationService productApplicationService;
 
-    @DisplayName("Can create productApplication entities using product and application entities")
+    @DisplayName("Should create productApplication entities using product and application entities")
     @Test
     void createProductApplicationTest() {
         Product product = mock(Product.class);
@@ -44,7 +44,7 @@ class ProductApplicationServiceTest {
         assertThat(productApplication).isSameAs(createdProductApplication);
     }
 
-    @DisplayName("Can find productApplication entities using application_id")
+    @DisplayName("Should find productApplication entities using application_id")
     @Test
     void retrieveProductApplicationUsingApplicationId() {
         ProductApplicationId id = new ProductApplicationId("productName", 1L);
@@ -62,7 +62,7 @@ class ProductApplicationServiceTest {
         assertThat(retrievedProductApplication).isSameAs(productApplication);
     }
 
-    @DisplayName("Can retrieve productApplication list using application")
+    @DisplayName("Should retrieve productApplication list using application")
     @Test
     void retrieveApplicationListByApplicationTest() {
         Application application = mock(Application.class);
@@ -80,7 +80,7 @@ class ProductApplicationServiceTest {
         assertThat(retrievedList).isSameAs(productApplicationList);
     }
 
-    @DisplayName("Can retrieve productApplication list using product")
+    @DisplayName("Should retrieve productApplication list using product")
     @Test
     void retrieveApplicationListByProductTest() {
         Product product = mock(Product.class);

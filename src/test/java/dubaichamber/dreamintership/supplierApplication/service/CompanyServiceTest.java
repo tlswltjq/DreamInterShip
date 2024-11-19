@@ -27,7 +27,7 @@ class CompanyServiceTest {
     @InjectMocks
     private CompanyService companyService;
 
-    @DisplayName("Can create company entity using companyName")
+    @DisplayName("Should create a company entity using companyName")
     @Test
     void createCompanyIdTest() {
         String companyName = "happyCompany";
@@ -41,7 +41,7 @@ class CompanyServiceTest {
         assertThat(company).isSameAs(createdCompany);
     }
 
-    @DisplayName("Can find company entity using companyName")
+    @DisplayName("Should find a company entity using companyName")
     @Test
     void retrieveCompanyTest() {
         String companyName = "happyCompany";
@@ -54,7 +54,7 @@ class CompanyServiceTest {
         verify(companyRepository).findById(companyName);
         assertThat(company).isSameAs(retrievedCompany);
     }
-    @DisplayName("Can't find list of company entity using non-existing companyName")
+    @DisplayName("Should throw NoSuchElementException when retrieving a non-existing company")
     @Test
     void failToRetrieveCompanyListTest() {
         String companyName = "wrongCompanyName";

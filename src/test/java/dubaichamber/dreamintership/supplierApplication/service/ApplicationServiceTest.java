@@ -27,7 +27,7 @@ class ApplicationServiceTest {
     @InjectMocks
     ApplicationService applicationService;
 
-    @DisplayName("Can create application entity")
+    @DisplayName("Should create an application entity successfully")
     @Test
     void canCreateApplication() {
         String companyName = "SAMSUNG";
@@ -48,7 +48,7 @@ class ApplicationServiceTest {
         assertThat(application).isSameAs(createdApplication);
     }
 
-    @DisplayName("Can find application using applicationId")
+    @DisplayName("Should find an application entity using applicationId")
     @Test
     void retrieveApplicationTest() {
         String companyName = "SAMSUNG";
@@ -70,7 +70,7 @@ class ApplicationServiceTest {
         assertThat(application).isSameAs(retrieveApplication);
     }
 
-    @DisplayName("Can find application using company entities")
+    @DisplayName("Should find application entities using company")
     @Test
     void retrieveApplicationUsingCompanyTest() {
         String companyName = "SAMSUNG";
@@ -92,7 +92,7 @@ class ApplicationServiceTest {
         assertThat(retrievedApplicationList.size()).isEqualTo(1);
         assertThat(retrievedApplicationList).contains(application);
     }
-    @DisplayName("Can find application using company_name")
+    @DisplayName("Should find application entities using company name")
     @Test
     void retrieveApplicationUsingCompanyNameTest(){
         String companyName = "SAMSUNG";
