@@ -26,6 +26,6 @@ public class ApplicationDetailResponse {
         this.website = application.getWebsite();
         this.productCatalogue = application.getProductCatalogue();
         this.comment = application.getComment();
-        this.submittingDate = application.getAddress();
+        this.submittingDate = application.getCreatedAt().toString();
     }
 }

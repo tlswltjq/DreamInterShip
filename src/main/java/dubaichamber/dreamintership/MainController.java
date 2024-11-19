@@ -9,4 +9,8 @@ public class MainController {
     public String landingPage() {
         return "landingPage";
     }
+    @GetMapping("/admin")
+    public String adminPage() {
+        return "adminPage";
+    }
 }

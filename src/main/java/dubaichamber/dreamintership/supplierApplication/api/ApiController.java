@@ -1,8 +1,6 @@
 package dubaichamber.dreamintership.supplierApplication.api;
 
-import dubaichamber.dreamintership.supplierApplication.dto.ApplicationDetailResponse;
-import dubaichamber.dreamintership.supplierApplication.dto.ApplicationResponse;
-import dubaichamber.dreamintership.supplierApplication.dto.CompanyResponse;
+import dubaichamber.dreamintership.supplierApplication.dto.*;
 import dubaichamber.dreamintership.supplierApplication.entity.Application;
 import dubaichamber.dreamintership.supplierApplication.entity.Company;
 import dubaichamber.dreamintership.supplierApplication.entity.Product;
@@ -60,11 +58,19 @@ public class ApiController {
     }
 
     @GetMapping("/application")
-    public ResponseEntity<?> getApplicationList(@RequestParam String companyName) {
+    public ResponseEntity<ApplicationResponse> getApplicationList(@RequestParam String companyName) {
         Company company = companyService.retrieveCompany(companyName);
         List<Application> applications = applicationService.retrieveApplicationList(company);
         List<ApplicationDetailResponse> list = applications.stream().map(ApplicationDetailResponse::new).toList();
         ApplicationResponse applicationResponse = new ApplicationResponse(companyName, list);
         return ResponseEntity.ok(applicationResponse);
+    }
+    @GetMapping("/product")
+    public ResponseEntity<?> getProductList(@RequestParam Long applicationId){
+        Application application = applicationService.retrieveApplication(applicationId);
+        List<ProductApplication> productApplications = productApplicationService.retrieveApplicationList(application);
+        List<ProductDetailResponse> list = productApplications.stream().map(ProductDetailResponse::new).toList();
+        ProductResponse productResponse = new ProductResponse(applicationId, list);
+        return ResponseEntity.ok(productResponse);
     }
 }
