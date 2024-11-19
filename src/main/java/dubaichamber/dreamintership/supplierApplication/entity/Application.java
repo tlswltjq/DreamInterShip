@@ -22,11 +22,11 @@ public class Application {
     private Long applicationId;
 
     @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "company_name", referencedColumnName = "company_name"),
-            @JoinColumn(name = "contact_person", referencedColumnName = "contact_person")
-    })
+    @JoinColumn(name = "company_name", referencedColumnName = "company_name")
     private Company company;
+
+    @Column(name = "contact_person")
+    private String contactPerson;
 
     @Column(name = "email")
     private String email;

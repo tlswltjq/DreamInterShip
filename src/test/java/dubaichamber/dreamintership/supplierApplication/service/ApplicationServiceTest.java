@@ -2,7 +2,6 @@ package dubaichamber.dreamintership.supplierApplication.service;
 
 import dubaichamber.dreamintership.supplierApplication.entity.Application;
 import dubaichamber.dreamintership.supplierApplication.entity.Company;
-import dubaichamber.dreamintership.supplierApplication.entity.CompanyId;
 import dubaichamber.dreamintership.supplierApplication.repository.ApplicationRepository;
 import dubaichamber.dreamintership.util.FixtureFactory;
 import org.junit.jupiter.api.DisplayName;
@@ -39,13 +38,12 @@ class ApplicationServiceTest {
         String webSite = "https://github.com/tlswltjq";
         String fileUrl = "https://placehold.co/600x400";
         String comment = ":D";
-        CompanyId companyId = factory.createCompanyId(companyName, contactPerson);
-        Company company = factory.createCompany(companyId);
-        Application application = factory.createApplication(company, email, address, phoneNumber, webSite, fileUrl, comment);
+        Company company = factory.createCompany(companyName);
+        Application application = factory.createApplication(company, contactPerson, email, address, phoneNumber, webSite, fileUrl, comment);
 
         when(applicationRepository.save(any(Application.class))).thenReturn(application);
 
-        Application createdApplication = applicationService.createApplication(company, email, address, phoneNumber, webSite, fileUrl, comment);
+        Application createdApplication = applicationService.createApplication(company, contactPerson, email, address, phoneNumber, webSite, fileUrl, comment);
         verify(applicationRepository).save(any(Application.class));
         assertThat(application).isSameAs(createdApplication);
     }
@@ -61,9 +59,8 @@ class ApplicationServiceTest {
         String webSite = "https://github.com/tlswltjq";
         String fileUrl = "https://placehold.co/600x400";
         String comment = ":D";
-        CompanyId companyId = factory.createCompanyId(companyName, contactPerson);
-        Company company = factory.createCompany(companyId);
-        Application application = factory.createApplication(company, email, address, phoneNumber, webSite, fileUrl, comment);
+        Company company = factory.createCompany(companyName);
+        Application application = factory.createApplication(company, contactPerson, email, address, phoneNumber, webSite, fileUrl, comment);
 
         when(applicationRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(application));
 
@@ -77,15 +74,15 @@ class ApplicationServiceTest {
     @Test
     void retrieveApplicationUsingCompanyTest() {
         String companyName = "SAMSUNG";
+        String contactPerson = "Lee";
         String email = "wltjq1203@icloud.com";
         String address = "30 Churchill Ave, 2135";
         String phoneNumber = "0401377916";
         String webSite = "https://github.com/tlswltjq";
         String fileUrl = "https://placehold.co/600x400";
         String comment = ":D";
-        CompanyId companyId = factory.createCompanyId(companyName, "Lee");
-        Company company = factory.createCompany(companyId);
-        Application application = factory.createApplication(company, email, address, phoneNumber, webSite, fileUrl, comment);
+        Company company = factory.createCompany(companyName);
+        Application application = factory.createApplication(company, contactPerson, email, address, phoneNumber, webSite, fileUrl, comment);
         List<Application> applicationList = List.of(application);
 
         when(applicationRepository.findByCompany(company)).thenReturn(applicationList);
@@ -99,26 +96,24 @@ class ApplicationServiceTest {
     @Test
     void retrieveApplicationUsingCompanyNameTest(){
         String companyName = "SAMSUNG";
+        String contactPerson1 = "PARK";
+        String contactPerson2 = "KIM";
         String email = "wltjq1203@icloud.com";
         String address = "30 Churchill Ave, 2135";
         String phoneNumber = "0401377916";
         String webSite = "https://github.com/tlswltjq";
         String fileUrl = "https://placehold.co/600x400";
         String comment = ":D";
-        CompanyId companyId1 = factory.createCompanyId(companyName, "Lee");
-        Company company1 = factory.createCompany(companyId1);
-        Application application1 = factory.createApplication(company1, email, address, phoneNumber, webSite, fileUrl, comment);
-
-        CompanyId companyId2 = factory.createCompanyId(companyName, "park");
-        Company company2 = factory.createCompany(companyId2);
-        Application application2 = factory.createApplication(company2, email, address, phoneNumber, webSite, fileUrl, comment);
+        Company company = factory.createCompany(companyName);
+        Application application1 = factory.createApplication(company, contactPerson1, email, address, phoneNumber, webSite, fileUrl, comment);
+        Application application2 = factory.createApplication(company, contactPerson2, email, address, phoneNumber, webSite, fileUrl, comment);
 
         List<Application> applicationList = List.of(application1, application2);
 
-        when(applicationRepository.findByCompany_Id_CompanyName(companyName)).thenReturn(applicationList);
+        when(applicationRepository.findByCompany(company)).thenReturn(applicationList);
 
-        List<Application> retrievedApplicationList = applicationService.retrieveApplicationList(companyName);
-        verify(applicationRepository).findByCompany_Id_CompanyName(companyName);
+        List<Application> retrievedApplicationList = applicationService.retrieveApplicationList(company);
+        verify(applicationRepository).findByCompany(company);
         assertThat(retrievedApplicationList).isSameAs(applicationList);
         assertThat(applicationList.size()).isEqualTo(2);
         assertThat(retrievedApplicationList).contains(application1, application2);

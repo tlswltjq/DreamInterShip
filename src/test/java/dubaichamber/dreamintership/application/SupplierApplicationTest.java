@@ -53,21 +53,20 @@ public class SupplierApplicationTest {
         String fileUrl = "/Users/sinjiseop/Projects/DreamInterShip/uploads/" + companyName + "_" + contactPerson + "_" + productCatalogue.getOriginalFilename();
 
         SupplierForm supplierForm = factory.createSupplierForm(companyName, contactPerson, email, address, phoneNumber, website, products, productCatalogue, comment);
-        CompanyId companyId = factory.createCompanyId(companyName, contactPerson);
-        Company company = factory.createCompany(companyId);
-        Application application = factory.createApplication(company, email, address, phoneNumber, website, fileUrl, comment);
+        Company company = factory.createCompany(companyName);
+        Application application = factory.createApplication(company, contactPerson, email, address, phoneNumber, website, fileUrl, comment);
 
-        when(companyService.createCompany(companyName, contactPerson)).thenReturn(company);
+        when(companyService.createCompany(companyName)).thenReturn(company);
         when(fileService.storeFile(productCatalogue, companyName, contactPerson)).thenReturn(fileUrl);
-        when(applicationService.createApplication(company, email, address, phoneNumber, website, fileUrl, comment)).thenReturn(application);
+        when(applicationService.createApplication(company, contactPerson, email, address, phoneNumber, website, fileUrl, comment)).thenReturn(application);
         when(productService.createProduct(any(String.class), any(String.class))).thenReturn(mock(Product.class));
         when(productApplicationService.crateProductApplication(any(Product.class), any(Application.class))).thenReturn(mock(ProductApplication.class));
 
         apiController.handleFormSubmission(supplierForm);
 
-        verify(companyService).createCompany(companyName, contactPerson);
+        verify(companyService).createCompany(companyName);
         verify(fileService).storeFile(productCatalogue, companyName, contactPerson);
-        verify(applicationService).createApplication(company, email, address, phoneNumber, website, fileUrl, comment);
+        verify(applicationService).createApplication(company, contactPerson, email, address, phoneNumber, website, fileUrl, comment);
         verify(productService, times(products.size())).createProduct(any(String.class), any(String.class));
         verify(productApplicationService, times(products.size())).crateProductApplication(any(Product.class), any(Application.class));
     }

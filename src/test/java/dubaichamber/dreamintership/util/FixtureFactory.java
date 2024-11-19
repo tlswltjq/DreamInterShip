@@ -1,6 +1,9 @@
 package dubaichamber.dreamintership.util;
 
-import dubaichamber.dreamintership.supplierApplication.entity.*;
+import dubaichamber.dreamintership.supplierApplication.entity.Application;
+import dubaichamber.dreamintership.supplierApplication.entity.Company;
+import dubaichamber.dreamintership.supplierApplication.entity.Product;
+import dubaichamber.dreamintership.supplierApplication.entity.ProductApplication;
 import dubaichamber.dreamintership.supplierApplication.model.ProductAndDescription;
 import dubaichamber.dreamintership.supplierApplication.model.SupplierForm;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,17 +20,14 @@ public class FixtureFactory {
         return entity;
     }
 
-    public CompanyId createCompanyId(String companyName, String contactPerson) {
-        return new CompanyId(companyName, contactPerson);
-    }
 
-    public Company createCompany(CompanyId companyId) {
+    public Company createCompany(String companyName) {
         return Company.builder()
-                .id(companyId)
+                .companyName(companyName)
                 .build();
     }
 
-    public Application createApplication(Company company, String email, String address, String phoneNumber, String webSite, String fileUrl, String comment) {
+    public Application createApplication(Company company, String contactPerson, String email, String address, String phoneNumber, String webSite, String fileUrl, String comment) {
         return Application.builder()
                 .applicationId(1L)
                 .company(company)
@@ -48,7 +48,7 @@ public class FixtureFactory {
                 .build();
     }
 
-    public SupplierForm createSupplierForm(String companyName, String contactPerson, String email, String address, String phoneNumber, String website, List<ProductAndDescription> products , MultipartFile productCatalogue, String comment) {
+    public SupplierForm createSupplierForm(String companyName, String contactPerson, String email, String address, String phoneNumber, String website, List<ProductAndDescription> products, MultipartFile productCatalogue, String comment) {
         SupplierForm supplierForm = new SupplierForm();
         supplierForm.setCompanyName(companyName);
         supplierForm.setContactPerson(contactPerson);
