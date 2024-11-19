@@ -13,5 +13,5 @@ import java.util.List;
 public interface ProductApplicationRepository extends JpaRepository<ProductApplication, ProductApplicationId> {
     List<ProductApplication> findByApplicationId(Application application);
 
-    List<ProductApplication> findByProductName(Product product);
+    List<ProductApplication> findByProductId(Product product);
 }

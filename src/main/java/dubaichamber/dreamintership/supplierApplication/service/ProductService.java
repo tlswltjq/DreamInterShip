@@ -19,13 +19,18 @@ public class ProductService {
                 .build());
     }
 
-    public Product retireveProduct(String productName) {
-        Product product = productRepository.findById(productName).orElseThrow(NoSuchElementException::new);
+    public Product retrieveProduct(Long productId) {
+        Product product = productRepository.findById(productId).orElseThrow(NoSuchElementException::new);
         return product;
     }
 
-    public Product deleteProduct(String productName) {
-        Product product = productRepository.findById(productName).orElseThrow(NoSuchElementException::new);
+    public Product retireveProductByProductName(String productName) {
+        Product product = productRepository.findByProductName(productName).orElseThrow(NoSuchElementException::new);
+        return product;
+    }
+
+    public Product deleteProduct(Long productId) {
+        Product product = productRepository.findById(productId).orElseThrow(NoSuchElementException::new);
         productRepository.delete(product);
         return product;
     }

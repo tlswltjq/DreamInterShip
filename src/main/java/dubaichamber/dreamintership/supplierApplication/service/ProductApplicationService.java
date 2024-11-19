@@ -19,7 +19,7 @@ public class ProductApplicationService {
     public ProductApplication crateProductApplication(Product product, Application application) {
         return productApplicationRepository.save(
                 ProductApplication.builder()
-                        .productName(product)
+                        .productId(product)
                         .applicationId(application)
                         .build()
         );
@@ -35,6 +35,6 @@ public class ProductApplicationService {
     }
 
     public List<ProductApplication> retrieveApplicationList(Product product) {
-        return productApplicationRepository.findByProductName(product);
+        return productApplicationRepository.findByProductId(product);
     }
 }

@@ -14,6 +14,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductApplicationId implements Serializable {
-    private String productName;
+    private Long productId;
     private Long applicationId;
 }

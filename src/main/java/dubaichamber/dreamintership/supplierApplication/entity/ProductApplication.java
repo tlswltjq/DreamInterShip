@@ -21,6 +21,6 @@ public class ProductApplication {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "product_name", referencedColumnName = "product_name")
-    private Product productName;
+    @JoinColumn(name = "product_id", referencedColumnName = "product_id")
+    private Product productId;
 }

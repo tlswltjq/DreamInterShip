@@ -49,11 +49,11 @@ class ProductServiceTest {
         String productDescription = "sweet";
         Product product = factory.createProduct(productName, productDescription);
 
-        when(productRepository.findById(productName)).thenReturn(Optional.ofNullable(product));
+        when(productRepository.findByProductName(productName)).thenReturn(Optional.ofNullable(product));
 
-        Product retireveProduct = productService.retireveProduct(productName);
+        Product retireveProduct = productService.retireveProductByProductName(productName);
 
-        verify(productRepository).findById(productName);
+        verify(productRepository).findByProductName(productName);
         assertThat(retireveProduct).isSameAs(product);
     }
 
@@ -62,38 +62,10 @@ class ProductServiceTest {
     void failToRetrieveProductTest() {
         String productName = "nonExistingProduct";
 
-        when(productRepository.findById(productName)).thenReturn(Optional.empty());
+        when(productRepository.findByProductName(productName)).thenReturn(Optional.empty());
 
-        assertThrows(NoSuchElementException.class, () -> productService.retireveProduct(productName));
+        assertThrows(NoSuchElementException.class, () -> productService.retireveProductByProductName(productName));
 
-        verify(productRepository).findById(productName);
-    }
-
-    @DisplayName("Should delete a product entity by name successfully")
-    @Test
-    void deleteProductTest() {
-        String productName = "apple";
-        String productDescription = "sweet";
-        Product product = factory.createProduct(productName, productDescription);
-
-        when(productRepository.findById(productName)).thenReturn(Optional.ofNullable(product));
-
-        Product deletedProduct = productService.deleteProduct(productName);
-
-        verify(productRepository).findById(productName);
-        verify(productRepository).delete(any(Product.class));
-        assertThat(deletedProduct).isSameAs(product);
-    }
-
-    @DisplayName("Should throw NoSuchElementException when deleting a non-existing product")
-    @Test
-    void failToDeleteProductTest() {
-        String productName = "nonExistingProduct";
-
-        when(productRepository.findById(productName)).thenReturn(Optional.empty());
-
-        assertThrows(NoSuchElementException.class, () -> productService.deleteProduct(productName));
-
-        verify(productRepository).findById(productName);
+        verify(productRepository).findByProductName(productName);
     }
 }

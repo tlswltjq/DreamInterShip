@@ -13,8 +13,9 @@ import java.util.List;
 
 public class FixtureFactory {
     public Product createProduct(String productName, String description) {
-        Product entity = Product.builder().
-                productName(productName)
+        Product entity = Product.builder()
+                .productId(1L)
+                .productName(productName)
                 .description(description)
                 .build();
         return entity;
@@ -31,6 +32,7 @@ public class FixtureFactory {
         return Application.builder()
                 .applicationId(1L)
                 .company(company)
+                .contactPerson(contactPerson)
                 .email(email)
                 .address(address)
                 .phoneNumber(phoneNumber)
@@ -43,7 +45,7 @@ public class FixtureFactory {
 
     public ProductApplication createProductApplication(Product product, Application application) {
         return ProductApplication.builder()
-                .productName(product)
+                .productId(product)
                 .applicationId(application)
                 .build();
     }

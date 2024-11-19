@@ -47,7 +47,7 @@ class ProductApplicationServiceTest {
     @DisplayName("Should find productApplication entities using application_id")
     @Test
     void retrieveProductApplicationUsingApplicationId() {
-        ProductApplicationId id = new ProductApplicationId("productName", 1L);
+        ProductApplicationId id = new ProductApplicationId(1L, 1L);
 
         Product product = mock(Product.class);
         Application application = mock(Application.class);
@@ -89,11 +89,11 @@ class ProductApplicationServiceTest {
                 factory.createProductApplication(product, mock(Application.class))
         );
 
-        when(productApplicationRepository.findByProductName(product)).thenReturn(productApplicationList);
+        when(productApplicationRepository.findByProductId(product)).thenReturn(productApplicationList);
 
         List<ProductApplication> retrievedList = productApplicationService.retrieveApplicationList(product);
 
-        verify(productApplicationRepository).findByProductName(product);
+        verify(productApplicationRepository).findByProductId(product);
         assertThat(retrievedList).isNotNull();
         assertThat(retrievedList).isSameAs(productApplicationList);
     }
