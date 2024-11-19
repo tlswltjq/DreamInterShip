@@ -5,6 +5,7 @@ import dubaichamber.dreamintership.supplierApplication.repository.CompanyReposit
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -22,5 +23,9 @@ public class CompanyService {
     public Company retrieveCompany(String companyName) {
         Company company = companyRepository.findById(companyName).orElseThrow(NoSuchElementException::new);
         return company;
+    }
+    public List<Company> retrieveAllCompany(){
+        List<Company> companyList = companyRepository.findAll();
+        return companyList;
     }
 }

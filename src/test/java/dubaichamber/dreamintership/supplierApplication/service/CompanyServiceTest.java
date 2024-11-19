@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -63,5 +64,21 @@ class CompanyServiceTest {
 
         assertThrows(NoSuchElementException.class, () -> companyService.retrieveCompany(companyName));
         verify(companyRepository).findById(companyName);
+    }
+
+    @DisplayName("")
+    @Test
+    void retrieveAllCompanyTest() {
+        String companyName = "company_";
+        Company company1 = factory.createCompany(companyName + 1);
+        Company company2 = factory.createCompany(companyName + 2);
+        List<Company> companyList = List.of(company1, company2);
+
+        when(companyRepository.findAll()).thenReturn(companyList);
+
+        List<Company> result = companyService.retrieveAllCompany();
+
+        verify(companyRepository).findAll();
+        assertThat(result.size()).isEqualTo(2);
     }
 }

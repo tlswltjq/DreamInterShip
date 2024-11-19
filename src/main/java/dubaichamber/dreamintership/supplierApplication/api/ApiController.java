@@ -1,5 +1,8 @@
 package dubaichamber.dreamintership.supplierApplication.api;
 
+import dubaichamber.dreamintership.supplierApplication.dto.ApplicationDetailResponse;
+import dubaichamber.dreamintership.supplierApplication.dto.ApplicationResponse;
+import dubaichamber.dreamintership.supplierApplication.dto.CompanyResponse;
 import dubaichamber.dreamintership.supplierApplication.entity.Application;
 import dubaichamber.dreamintership.supplierApplication.entity.Company;
 import dubaichamber.dreamintership.supplierApplication.entity.Product;
@@ -18,7 +21,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/supplier")
+@RequestMapping("/api")
 public class ApiController {
     private final ApplicationService applicationService;
     private final CompanyService companyService;
@@ -26,16 +29,16 @@ public class ApiController {
     private final ProductService productService;
     private final ProductApplicationService productApplicationService;
 
-    @PostMapping("/form")
+    @PostMapping("/supplier/form")
     public ResponseEntity<String> handleFormSubmission(@ModelAttribute SupplierForm request) {
-        Company company = companyService.createCompany(request.getCompanyName(), request.getContactPerson());
+        Company company = companyService.createCompany(request.getCompanyName());
 
         String filePath = "";
         MultipartFile productCatalogue = request.getProductCatalogue();
         if (productCatalogue != null && !productCatalogue.isEmpty()) {
             filePath = fileService.storeFile(productCatalogue, request.getCompanyName(), request.getContactPerson());
         }
-        Application application = applicationService.createApplication(company, request.getEmail(), request.getAddress(), request.getPhoneNumber(), request.getWebsite(), filePath, request.getComment());
+        Application application = applicationService.createApplication(company, request.getContactPerson(), request.getEmail(), request.getAddress(), request.getPhoneNumber(), request.getWebsite(), filePath, request.getComment());
 
         List<ProductAndDescription> productsDetail = request.getProducts();
 
@@ -44,5 +47,24 @@ public class ApiController {
             ProductApplication productApplication = productApplicationService.crateProductApplication(product, application);
         }
         return ResponseEntity.ok("Form submitted successfully");
+    }
+
+    @GetMapping("/company")
+    public ResponseEntity<CompanyResponse> getCompanyList() {
+        List<Company> companyList = companyService.retrieveAllCompany();
+        List<String> companyNames = companyList.stream()
+                .map(Company::getCompanyName)
+                .toList();
+        CompanyResponse companyResponse = new CompanyResponse(companyNames);
+        return ResponseEntity.ok(companyResponse);
+    }
+
+    @GetMapping("/application")
+    public ResponseEntity<?> getApplicationList(@RequestParam String companyName) {
+        Company company = companyService.retrieveCompany(companyName);
+        List<Application> applications = applicationService.retrieveApplicationList(company);
+        List<ApplicationDetailResponse> list = applications.stream().map(ApplicationDetailResponse::new).toList();
+        ApplicationResponse applicationResponse = new ApplicationResponse(companyName, list);
+        return ResponseEntity.ok(applicationResponse);
     }
 }
