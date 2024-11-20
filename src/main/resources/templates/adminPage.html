@@ -51,6 +51,12 @@
 </head>
 <body>
 <div class="container mt-5">
+    <div class="row mb-3">
+        <div class="col">
+            <button onclick="downloadExcel()" class="btn btn-success">Excel 다운로드</button>
+            <button onclick="downloadCsv()" class="btn btn-info">CSV 다운로드</button>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-4">
             <h3>Company List</h3>
@@ -217,6 +223,13 @@
     }
 
     document.addEventListener('DOMContentLoaded', fetchCompanyNames);
+    function downloadExcel() {
+        window.location.href = '/api/export/excel';
+    }
+    
+    function downloadCsv() {
+        window.location.href = '/api/export/csv';
+    }
 </script>
 </body>
 </html>
