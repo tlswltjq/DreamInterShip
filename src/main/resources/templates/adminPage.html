@@ -6,37 +6,73 @@
     <title>Company List</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* 고정된 컨테이너 스타일 */
         .scrollable-container {
-            height: 400px; /* 컨테이너 높이 지정 */
-            overflow-y: auto; /* 세로 스크롤 활성화 */
-            border: 1px solid #ddd; /* 테두리 추가로 시각적으로 구분 */
-            padding: 10px; /* 내부 여백 */
-            background-color: #f9f9f9; /* 배경색 */
+            height: 500px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 15px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .active {
             background-color: #007bff;
             color: white;
             font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .list-group-item {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .list-group-item:hover {
+            background-color: #f0f0f0;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+        .error-message {
+            color: #dc3545;
+            padding: 10px;
+            text-align: center;
+        }
+        @media (max-width: 768px) {
+            .row {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+            .col-md-4 {
+                min-width: 300px;
+                padding: 0 10px;
+            }
         }
     </style>
 </head>
 <body>
 <div class="container mt-5">
-    <h1>Company List</h1>
     <div class="row">
         <div class="col-md-4">
+            <h3>Company List</h3>
             <div class="scrollable-container">
+                <div id="company-loading" class="loading d-none">Loading...</div>
+                <div id="company-error" class="error-message d-none"></div>
                 <ul id="company-list" class="list-group"></ul>
             </div>
         </div>
         <div class="col-md-4">
+            <h3>Application</h3>
             <div class="scrollable-container">
+                <div id="application-loading" class="loading d-none">Loading...</div>
+                <div id="application-error" class="error-message d-none"></div>
                 <ul id="application-list" class="list-group"></ul>
             </div>
         </div>
         <div class="col-md-4">
+            <h3>Product List</h3>
             <div class="scrollable-container">
+                <div id="product-loading" class="loading d-none">Loading...</div>
+                <div id="product-error" class="error-message d-none"></div>
                 <ul id="product-list" class="list-group"></ul>
             </div>
         </div>
@@ -44,14 +80,32 @@
 </div>
 
 <script>
+    async function showLoading(elementId) {
+        document.getElementById(`${elementId}-loading`).classList.remove('d-none');
+        document.getElementById(`${elementId}-error`).classList.add('d-none');
+    }
+
+    async function hideLoading(elementId) {
+        document.getElementById(`${elementId}-loading`).classList.add('d-none');
+    }
+
+    async function showError(elementId, message) {
+        const errorElement = document.getElementById(`${elementId}-error`);
+        errorElement.textContent = message;
+        errorElement.classList.remove('d-none');
+    }
+
     async function fetchCompanyNames() {
         try {
-            const response = await fetch('http://localhost:8080/api/company');
+            showLoading('company');
+            const response = await fetch('/api/company');
+            if (!response.ok) throw new Error('Failed to load company information');
+            
             const data = await response.json();
-            const companyNameList = data.companyNameList;
-
             const companyListElement = document.getElementById('company-list');
-            companyNameList.forEach(companyName => {
+            companyListElement.innerHTML = '';
+
+            data.companyNameList.forEach(companyName => {
                 const listItem = document.createElement('li');
                 listItem.className = 'list-group-item';
                 listItem.textContent = companyName;
@@ -65,29 +119,36 @@
                 companyListElement.appendChild(listItem);
             });
         } catch (error) {
+            showError('company', error.message);
             console.error('Error fetching company names:', error);
+        } finally {
+            hideLoading('company');
         }
     }
 
     async function fetchApplications(companyName) {
         try {
-            const response = await fetch(`http://localhost:8080/api/application?companyName=${encodeURIComponent(companyName)}`);
-            const data = await response.json();
-            const applicationList = data.applicationList;
+            showLoading('application');
+            const response = await fetch(`/api/application?companyName=${encodeURIComponent(companyName)}`);
+            if (!response.ok) throw new Error('Failed to load application information');
 
+            const data = await response.json();
             const applicationListElement = document.getElementById('application-list');
-            applicationListElement.innerHTML = ''; // Clear previous applications
-            applicationList.forEach(application => {
+            applicationListElement.innerHTML = '';
+
+            data.applicationList.forEach(application => {
                 const listItem = document.createElement('li');
                 listItem.className = 'list-group-item';
                 listItem.innerHTML = `
-                    <strong>Contact Person:</strong> ${application.contactPerson}<br>
-                    <strong>Email:</strong> ${application.email}<br>
-                    <strong>Address:</strong> ${application.address}<br>
-                    <strong>Phone Number:</strong> ${application.phoneNumber}<br>
-                    <strong>Website:</strong> <a href="${application.website}" target="_blank">${application.website}</a><br>
-                    <strong>Comment:</strong> ${application.comment}<br>
-                    <strong>Submitting Date:</strong> ${application.submittingDate}
+                    <div class="mb-2">
+                        <strong>Contact Person:</strong> ${application.contactPerson}<br>
+                        <strong>Email:</strong> ${application.email}<br>
+                        <strong>Address:</strong> ${application.address}<br>
+                        <strong>Phone Number:</strong> ${application.phoneNumber}<br>
+                        <strong>Website:</strong> <a href="${application.website}" target="_blank" rel="noopener noreferrer">${application.website}</a><br>
+                        <strong>Comment:</strong> ${application.comment}<br>
+                        <strong>Submission Date:</strong> ${new Date(application.submittingDate).toLocaleDateString()}
+                    </div>
                 `;
 
                 listItem.addEventListener('click', () => {
@@ -99,24 +160,31 @@
                 applicationListElement.appendChild(listItem);
             });
         } catch (error) {
+            showError('application', error.message);
             console.error('Error fetching applications:', error);
+        } finally {
+            hideLoading('application');
         }
     }
 
     async function fetchProducts(applicationId) {
         try {
-            const response = await fetch(`http://localhost:8080/api/product?applicationId=${applicationId}`);
-            const data = await response.json();
-            const productList = data.products;
+            showLoading('product');
+            const response = await fetch(`/api/product?applicationId=${applicationId}`);
+            if (!response.ok) throw new Error('Failed to load product information');
 
+            const data = await response.json();
             const productListElement = document.getElementById('product-list');
-            productListElement.innerHTML = ''; // Clear previous products
-            productList.forEach(product => {
+            productListElement.innerHTML = '';
+
+            data.products.forEach(product => {
                 const listItem = document.createElement('li');
                 listItem.className = 'list-group-item';
                 listItem.innerHTML = `
-                    <strong>Product Name:</strong> ${product.productName}<br>
-                    <strong>Description:</strong> ${product.description}
+                    <div class="mb-2">
+                        <strong>Product Name:</strong> ${product.productName}<br>
+                        <strong>Description:</strong> ${product.description}
+                    </div>
                 `;
                 listItem.addEventListener('click', () => {
                     highlightSelected(listItem, 'product-list');
@@ -124,7 +192,10 @@
                 productListElement.appendChild(listItem);
             });
         } catch (error) {
+            showError('product', error.message);
             console.error('Error fetching products:', error);
+        } finally {
+            hideLoading('product');
         }
     }
 
@@ -132,7 +203,7 @@
         elementIds.forEach(id => {
             const element = document.getElementById(id);
             if (element) {
-                element.innerHTML = ''; // Clear content
+                element.innerHTML = '';
             }
         });
     }
@@ -140,9 +211,9 @@
     function highlightSelected(selectedElement, listId) {
         const listElement = document.getElementById(listId);
         Array.from(listElement.children).forEach(child => {
-            child.classList.remove('active'); // 기존 하이라이트 제거
+            child.classList.remove('active');
         });
-        selectedElement.classList.add('active'); // 현재 선택 항목 하이라이트 추가
+        selectedElement.classList.add('active');
     }
 
     document.addEventListener('DOMContentLoaded', fetchCompanyNames);
