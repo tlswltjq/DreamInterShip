@@ -1,4 +1,4 @@
-package dubaichamber.dreamintership.newsletter;
+package dubaichamber.dreamintership.newsletter.repository;
 
 import dubaichamber.dreamintership.newsletter.entity.Subscriber;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +10,7 @@ import java.util.List;
 public interface SubscriberRepository extends JpaRepository<Subscriber, String> {
     boolean existsByEmail(String email);
 
-    List<Subscriber> findByIsSubscribedTrue();
+    List<Subscriber> findBySubscribedTrue();
 
     List<Subscriber> findByStatus(Subscriber.SubscriptionStatus status);
 }

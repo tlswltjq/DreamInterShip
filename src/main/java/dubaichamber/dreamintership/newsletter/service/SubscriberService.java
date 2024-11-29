@@ -1,7 +1,7 @@
 package dubaichamber.dreamintership.newsletter.service;
 
 import dubaichamber.dreamintership.newsletter.entity.Subscriber;
-import dubaichamber.dreamintership.newsletter.SubscriberRepository;
+import dubaichamber.dreamintership.newsletter.repository.SubscriberRepository;
 import dubaichamber.dreamintership.newsletter.dto.EmailMessage;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +48,6 @@ public class SubscriberService {
     }
 
     public List<Subscriber> getActiveSubscribers() {
-        return subscriberRepository.findByIsSubscribedTrue();
+        return subscriberRepository.findBySubscribedTrue();
     }
 }

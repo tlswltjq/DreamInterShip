@@ -1,7 +1,7 @@
 package dubaichamber.dreamintership.newsletter.service;
 
 import dubaichamber.dreamintership.newsletter.entity.Subscriber;
-import dubaichamber.dreamintership.newsletter.SubscriberRepository;
+import dubaichamber.dreamintership.newsletter.repository.SubscriberRepository;
 import dubaichamber.dreamintership.newsletter.dto.EmailMessage;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +55,7 @@ public class EmailService {
     }
 
     public void sendToAllSubscribers(EmailMessage emailTemplate) {
-        List<Subscriber> activeSubscribers = subscriberRepository.findByIsSubscribedTrue();
+        List<Subscriber> activeSubscribers = subscriberRepository.findBySubscribedTrue();
 
         for (Subscriber subscriber : activeSubscribers) {
             EmailMessage personalizedEmail = EmailMessage.builder()
@@ -71,7 +71,7 @@ public class EmailService {
     }
 
     public void sendToAllSubscribersBatch(EmailMessage emailTemplate, int batchSize) {
-        List<Subscriber> activeSubscribers = subscriberRepository.findByIsSubscribedTrue();
+        List<Subscriber> activeSubscribers = subscriberRepository.findBySubscribedTrue();
         int totalSubscribers = activeSubscribers.size();
 
         for (int i = 0; i < totalSubscribers; i += batchSize) {
