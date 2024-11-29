@@ -10,6 +10,11 @@ import dubaichamber.dreamintership.supplierApplication.model.SupplierForm;
 import dubaichamber.dreamintership.supplierApplication.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +31,7 @@ public class ApiController {
     private final FileService fileService;
     private final ProductService productService;
     private final ProductApplicationService productApplicationService;
+    private final ExportService exportService;
 
     @PostMapping("/supplier/form")
     public ResponseEntity<String> handleFormSubmission(@ModelAttribute SupplierForm request) {
@@ -73,4 +79,29 @@ public class ApiController {
         ProductResponse productResponse = new ProductResponse(applicationId, list);
         return ResponseEntity.ok(productResponse);
     }
+    @GetMapping("/export/excel")
+public ResponseEntity<byte[]> exportToExcel() {
+    byte[] excelFile = exportService.exportToExcel();
+    
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+    headers.setContentDisposition(ContentDisposition.attachment()
+            .filename("application_details.xlsx")
+            .build());
+    
+    return new ResponseEntity<>(excelFile, headers, HttpStatus.OK);
+}
+
+@GetMapping("/export/csv")
+public ResponseEntity<String> exportToCsv() {
+    String csvContent = exportService.exportToCsv();
+    
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.TEXT_PLAIN);
+    headers.setContentDisposition(ContentDisposition.attachment()
+            .filename("application_details.csv")
+            .build());
+    
+    return new ResponseEntity<>(csvContent, headers, HttpStatus.OK);
+}
 }
