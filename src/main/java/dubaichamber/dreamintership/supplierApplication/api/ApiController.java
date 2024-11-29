@@ -71,37 +71,39 @@ public class ApiController {
         ApplicationResponse applicationResponse = new ApplicationResponse(companyName, list);
         return ResponseEntity.ok(applicationResponse);
     }
+
     @GetMapping("/product")
-    public ResponseEntity<?> getProductList(@RequestParam Long applicationId){
+    public ResponseEntity<?> getProductList(@RequestParam Long applicationId) {
         Application application = applicationService.retrieveApplication(applicationId);
         List<ProductApplication> productApplications = productApplicationService.retrieveApplicationList(application);
         List<ProductDetailResponse> list = productApplications.stream().map(ProductDetailResponse::new).toList();
         ProductResponse productResponse = new ProductResponse(applicationId, list);
         return ResponseEntity.ok(productResponse);
     }
-    @GetMapping("/export/excel")
-public ResponseEntity<byte[]> exportToExcel() {
-    byte[] excelFile = exportService.exportToExcel();
-    
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-    headers.setContentDisposition(ContentDisposition.attachment()
-            .filename("application_details.xlsx")
-            .build());
-    
-    return new ResponseEntity<>(excelFile, headers, HttpStatus.OK);
-}
 
-@GetMapping("/export/csv")
-public ResponseEntity<String> exportToCsv() {
-    String csvContent = exportService.exportToCsv();
-    
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.TEXT_PLAIN);
-    headers.setContentDisposition(ContentDisposition.attachment()
-            .filename("application_details.csv")
-            .build());
-    
-    return new ResponseEntity<>(csvContent, headers, HttpStatus.OK);
-}
+    @GetMapping("/export/excel")
+    public ResponseEntity<byte[]> exportToExcel() {
+        byte[] excelFile = exportService.exportToExcel();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDisposition(ContentDisposition.attachment()
+                .filename("application_details.xlsx")
+                .build());
+
+        return new ResponseEntity<>(excelFile, headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/export/csv")
+    public ResponseEntity<String> exportToCsv() {
+        String csvContent = exportService.exportToCsv();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.TEXT_PLAIN);
+        headers.setContentDisposition(ContentDisposition.attachment()
+                .filename("application_details.csv")
+                .build());
+
+        return new ResponseEntity<>(csvContent, headers, HttpStatus.OK);
+    }
 }
