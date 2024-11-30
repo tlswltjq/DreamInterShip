@@ -13,4 +13,8 @@ public class MainController {
     public String adminPage() {
         return "adminPage";
     }
+    @GetMapping("/newsletter")
+    public String newsletterPage() {
+        return "newsletter";
+    }
 }

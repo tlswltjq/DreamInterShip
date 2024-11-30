@@ -10,7 +10,7 @@ import java.util.List;
 public interface SubscriberRepository extends JpaRepository<Subscriber, String> {
     boolean existsByEmail(String email);
 
-    List<Subscriber> findBySubscribedTrue();
+    List<Subscriber> findByIsSubscribedTrue();
 
     List<Subscriber> findByStatus(Subscriber.SubscriptionStatus status);
 }

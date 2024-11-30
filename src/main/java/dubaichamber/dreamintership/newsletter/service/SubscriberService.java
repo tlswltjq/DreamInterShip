@@ -2,12 +2,9 @@ package dubaichamber.dreamintership.newsletter.service;
 
 import dubaichamber.dreamintership.newsletter.entity.Subscriber;
 import dubaichamber.dreamintership.newsletter.repository.SubscriberRepository;
-import dubaichamber.dreamintership.newsletter.dto.EmailMessage;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,9 +20,9 @@ public class SubscriberService {
 
         Subscriber subscriber = new Subscriber();
         subscriber.setEmail(email);
+        subscriber.setSubscribed(true);
+        subscriber.setStatus(Subscriber.SubscriptionStatus.ACTIVE);
         subscriberRepository.save(subscriber);
-
-        sendWelcomeEmail(email);
     }
 
     public void unsubscribe(String email) {
@@ -35,19 +32,5 @@ public class SubscriberService {
         subscriber.setSubscribed(false);
         subscriber.setStatus(Subscriber.SubscriptionStatus.UNSUBSCRIBED);
         subscriberRepository.save(subscriber);
-    }
-
-    private void sendWelcomeEmail(String email) {
-        EmailMessage welcomeEmail = EmailMessage.builder()
-                .to(email)
-                .subject("Welcome to Dubai Chamber Newsletter")
-                .message("<h1>구독해 주셔서 감사합니다</h1>")
-                .build();
-
-        emailService.sendHtmlMessage(welcomeEmail);
-    }
-
-    public List<Subscriber> getActiveSubscribers() {
-        return subscriberRepository.findBySubscribedTrue();
     }
 }
